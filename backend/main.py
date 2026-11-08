@@ -1,6 +1,6 @@
 
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from jwt.exceptions import InvalidTokenError
 
@@ -61,14 +61,17 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/login")
-def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
 
     db_user = db.query(models.User).filter(
-        models.User.email == user.email
+        models.User.email == form_data.username
     ).first()
 
     if not db_user or not verify_password(
-        user.password, db_user.hashed_password
+        form_data.password, db_user.hashed_password
     ):
         raise HTTPException(
             status_code=401,
