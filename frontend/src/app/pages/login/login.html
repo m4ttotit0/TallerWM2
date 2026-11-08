@@ -1,1 +1,30 @@
-<p>login works!</p>
+
+<div class="login-container">
+  <mat-card class="login-card">
+
+    <h1>Bienvenido</h1>
+    <p>Ingresa a tu cuenta</p>
+
+    <form>
+      <mat-form-field appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" placeholder="ejemplo@correo.com">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">
+        Iniciar sesión
+      </button>
+    </form>
+
+    <p class="register-text">
+      ¿No tienes cuenta?
+      <a routerLink="/register">Regístrate aquí</a>
+    </p>
+
+  </mat-card>
+</div>
