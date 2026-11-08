@@ -1,0 +1,40 @@
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 35px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+h1 {
+  color: #1976d2;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+button {
+  height: 45px;
+}
+
+.register-text {
+  margin-top: 25px;
+}
+
+a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: bold;
+}
