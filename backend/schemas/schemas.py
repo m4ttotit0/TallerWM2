@@ -8,10 +8,7 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
-<<<<<<< HEAD
-=======
 
->>>>>>> e1b0659e34213d719bdc4dde6a15efd456f83feb
 class UserResponse(BaseModel):
     id: int
     username: str
@@ -22,3 +19,11 @@ class UserResponse(BaseModel):
 class PrincipalEntityCreate(BaseModel):
     title: str
     description: str | None = None
+
+class PrincipalEntityResponse(BaseModel):
+    id: int
+    title: str
+    description: str | None = None
+    user_id: int
+
+    model_config = ConfigDict(from_attributes=True)
