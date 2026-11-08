@@ -8,6 +8,10 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
+<<<<<<< HEAD
+=======
+
+>>>>>>> e1b0659e34213d719bdc4dde6a15efd456f83feb
 class UserResponse(BaseModel):
     id: int
     username: str

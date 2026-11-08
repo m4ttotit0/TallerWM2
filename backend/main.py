@@ -1,6 +1,6 @@
 
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jwt.exceptions import InvalidTokenError
 
@@ -25,7 +25,7 @@ app = FastAPI(
 )
 
 # Configuración de autenticación
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
 @app.get("/")
@@ -61,10 +61,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/login")
-def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
-):
+def login(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
     db_user = db.query(models.User).filter(
         models.User.email == form_data.username
@@ -87,8 +84,10 @@ def login(
         "token_type": "bearer"
     }
 
+
+# Obtener el usuario autenticado mediante JWT
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
     db: Session = Depends(get_db)
 ):
 
@@ -98,18 +97,24 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"}
     )
 
+    if credentials is None:
+        raise credentials_exception
+
     try:
+        token = credentials.credentials
         payload = decode_access_token(token)
         user_id = payload.get("sub")
 
         if user_id is None:
             raise credentials_exception
 
-    except InvalidTokenError:
+        user_id = int(user_id)
+
+    except (InvalidTokenError, ValueError, AttributeError):
         raise credentials_exception
 
     current_user = db.query(models.User).filter(
-        models.User.id == int(user_id)
+        models.User.id == user_id
     ).first()
 
     if current_user is None:
