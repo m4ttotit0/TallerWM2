@@ -13,3 +13,7 @@ class UserResponse(BaseModel):
     email: str
 
     model_config = ConfigDict(from_attributes=True)
+
+class PrincipalEntityCreate(BaseModel):
+    title: str
+    description: str | None = None
