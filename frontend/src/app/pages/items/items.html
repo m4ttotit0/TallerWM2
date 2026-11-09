@@ -1,1 +1,36 @@
-<p>items works!</p>
+<div class="upload-container" style="display: flex; justify-content: center; align-items: center; padding: 40px 20px;">
+  <mat-card style="width: 100%; max-width: 450px; padding: 20px;">
+    
+    <mat-card-header style="margin-bottom: 20px;">
+      <mat-card-title>Subir nueva foto</mat-card-title>
+      <mat-card-subtitle>Comparte un nuevo momento con nosotros :D</mat-card-subtitle>
+    </mat-card-header>
+
+    <form [formGroup]="photoForm" (ngSubmit)="onSubmit()" style="display: flex; flexDirection: column; gap: 20px;">
+      
+      <!-- URL de la imagen -->
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>URL de la imagen</mat-label>
+        <input matInput formControlName="image_url" placeholder="https://ejemplo.com/foto.jpg">
+        @if (photoForm.get('image_url')?.invalid && photoForm.get('image_url')?.touched) {
+          <mat-error>Ingresa una URL válida por favor</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- descripción -->
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Agrega una descripción :D"></textarea>
+        @if (photoForm.get('description')?.invalid && photoForm.get('description')?.touched) {
+          <mat-error>Descripción con máximo de 250 caracteres OwO</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Botón de envío -->
+      <button mat-flat-button color="primary" type="submit" [disabled]="photoForm.invalid" style="padding: 10px 0;">
+        Publicar
+      </button>
+
+    </form>
+  </mat-card>
+</div>
