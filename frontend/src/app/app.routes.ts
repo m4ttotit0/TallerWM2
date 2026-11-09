@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
-import { Dashboard } from './pages/dashboard/dashboard';
+import { DashboardComponent } from './pages/dashboard/dashboard';
 import { Items } from './pages/items/items';
 
 import { authGuard } from './guards/auth.guard';
@@ -27,7 +27,7 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
-    component: Dashboard,
+    component: DashboardComponent,
     canActivate: [authGuard]
   },
 
@@ -40,7 +40,7 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'login'
-  }
+  },
 
   { 
     path: 'feed', 

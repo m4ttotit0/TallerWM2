@@ -1,12 +1,10 @@
-import {
-  HttpInterceptorFn
-} from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = localStorage.getItem('token');
 
-  if (token) {
+  if (token && req.url.startsWith('http://localhost:8000')) {
 
     const authReq = req.clone({
       setHeaders: {
