@@ -20,7 +20,7 @@ def create_item(
 ):
 
     new_item = models.PrincipalEntity(
-        title=item.title,
+        image_url=item.image_url,
         description=item.description,
         user_id=current_user.id
     )
@@ -86,7 +86,7 @@ def update_item(
             detail="Elemento no encontrado"
         )
 
-    item.title = item_data.title
+    item.image_url = item_data.image_url
     item.description = item_data.description
 
     db.commit()
