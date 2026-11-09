@@ -1,30 +1,123 @@
-
 <div class="login-container">
+
   <mat-card class="login-card">
 
     <h1>Bienvenido</h1>
-    <p>Ingresa a tu cuenta</p>
 
-    <form>
-      <mat-form-field appearance="outline">
-        <mat-label>Correo electrónico</mat-label>
-        <input matInput type="email" placeholder="ejemplo@correo.com">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password">
-      </mat-form-field>
-
-      <button mat-raised-button color="primary" type="submit">
-        Iniciar sesión
-      </button>
-    </form>
-
-    <p class="register-text">
-      ¿No tienes cuenta?
-      <a routerLink="/register">Regístrate aquí</a>
+    <p>
+      Ingresa a tu cuenta
     </p>
 
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+    >
+
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>
+          Correo electrónico
+        </mat-label>
+
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+        >
+
+        @if (
+          loginForm.controls.email.hasError('required')
+          &&
+          loginForm.controls.email.touched
+        ) {
+
+          <mat-error>
+            El correo es obligatorio
+          </mat-error>
+
+        }
+
+        @if (
+          loginForm.controls.email.hasError('email')
+          &&
+          loginForm.controls.email.touched
+        ) {
+
+          <mat-error>
+            Ingresa un correo válido
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>
+          Contraseña
+        </mat-label>
+
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+        >
+
+        @if (
+          loginForm.controls.password.hasError('required')
+          &&
+          loginForm.controls.password.touched
+        ) {
+
+          <mat-error>
+            La contraseña es obligatoria
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="isLoading"
+      >
+
+        @if (isLoading) {
+
+          Ingresando...
+
+        } @else {
+
+          Iniciar sesión
+
+        }
+
+      </button>
+
+
+    </form>
+
+
+
+    <p class="register-text">
+
+      ¿No tienes cuenta?
+
+      <a routerLink="/register">
+        Regístrate aquí
+      </a>
+
+    </p>
+
+
   </mat-card>
+
 </div>

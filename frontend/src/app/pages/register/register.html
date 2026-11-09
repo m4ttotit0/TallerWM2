@@ -1,1 +1,205 @@
-<p>register works!</p>
+<div class="register-container">
+
+  <mat-card class="register-card">
+
+    <h1>Crear cuenta</h1>
+
+    <p class="subtitle">
+      Regístrate para comenzar
+    </p>
+
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+    >
+
+
+      <!-- USERNAME -->
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Nombre de usuario</mat-label>
+
+        <input
+          matInput
+          type="text"
+          formControlName="username"
+        >
+
+        @if (
+          registerForm.controls.username.hasError('required')
+          &&
+          registerForm.controls.username.touched
+        ) {
+
+          <mat-error>
+            El nombre de usuario es obligatorio
+          </mat-error>
+
+        }
+
+        @if (
+          registerForm.controls.username.hasError('minlength')
+          &&
+          registerForm.controls.username.touched
+        ) {
+
+          <mat-error>
+            Debe tener al menos 3 caracteres
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+
+      <!-- EMAIL -->
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Correo electrónico</mat-label>
+
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+        >
+
+        @if (
+          registerForm.controls.email.hasError('required')
+          &&
+          registerForm.controls.email.touched
+        ) {
+
+          <mat-error>
+            El correo es obligatorio
+          </mat-error>
+
+        }
+
+        @if (
+          registerForm.controls.email.hasError('email')
+          &&
+          registerForm.controls.email.touched
+        ) {
+
+          <mat-error>
+            Ingresa un correo válido
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+
+      <!-- PASSWORD -->
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Contraseña</mat-label>
+
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+        >
+
+        @if (
+          registerForm.controls.password.hasError('required')
+          &&
+          registerForm.controls.password.touched
+        ) {
+
+          <mat-error>
+            La contraseña es obligatoria
+          </mat-error>
+
+        }
+
+        @if (
+          registerForm.controls.password.hasError('minlength')
+          &&
+          registerForm.controls.password.touched
+        ) {
+
+          <mat-error>
+            Debe tener al menos 6 caracteres
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+
+      <!-- CONFIRM PASSWORD -->
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Confirmar contraseña</mat-label>
+
+        <input
+          matInput
+          type="password"
+          formControlName="confirmPassword"
+        >
+
+        @if (
+          registerForm.controls.confirmPassword.hasError('required')
+          &&
+          registerForm.controls.confirmPassword.touched
+        ) {
+
+          <mat-error>
+            Debes confirmar la contraseña
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+
+      <!-- BUTTON -->
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="isLoading"
+      >
+
+        @if (isLoading) {
+
+          Registrando...
+
+        } @else {
+
+          Crear cuenta
+
+        }
+
+      </button>
+
+
+    </form>
+
+
+
+    <p class="login-text">
+
+      ¿Ya tienes una cuenta?
+
+      <a routerLink="/login">
+        Inicia sesión
+      </a>
+
+    </p>
+
+
+  </mat-card>
+
+</div>

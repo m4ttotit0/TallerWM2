@@ -1,41 +1,109 @@
-import { Injectable, signal, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {
+  Injectable,
+  inject,
+  signal
+} from '@angular/core';
+
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http';
+
 import { Router } from '@angular/router';
+
 import { tap } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' }) //Singleton
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private http = inject(HttpClient); //FastAPI
-  private router = inject(Router); //Esto es sólo para rederigir
-  
-  private apiUrl = 'http://localhost:8000';
-  
-  // Signal de estado global para el token / usuario
-  token = signal<string | null>(localStorage.getItem('token'));
 
-//Inicio sesion
-  login(credentials: any) {
-    const formData = new FormData();
-    formData.append('username', credentials.username);
-    formData.append('password', credentials.password);
+  private http = inject(HttpClient);
 
-    return this.http.post<{ access_token: string }>(`${this.apiUrl}/login`,formData).pipe(
-      tap(res => {
-        localStorage.setItem('token', res.access_token);
-        this.token.set(res.access_token);
-      })
-    );
-  }
+  private router = inject(Router);
 
-//Cerrar sesión
-  logout() {
-    localStorage.removeItem('token');
-    this.token.set(null);
-    this.router.navigate(['/login']);
-  }
+  private apiUrl = 'http://localhost:8000';
 
-//Esto es sólo para verificar
-  isAuthenticated(): boolean {
-    return !!this.token(); //El !! convierte cualquier valor a booleano
-  }
+  token = signal<string | null>(
+    localStorage.getItem('token')
+  );
+
+
+  register(user: {
+    username: string;
+    email: string;
+    password: string;
+  }) {
+
+    return this.http.post(
+      `${this.apiUrl}/users/`,
+      user
+    );
+  }
+
+
+  login(credentials: {
+    username: string;
+    password: string;
+  }) {
+
+    const body = new HttpParams()
+      .set('username', credentials.username)
+      .set('password', credentials.password);
+
+    return this.http.post<{
+      access_token: string;
+      token_type: string;
+    }>(
+      `${this.apiUrl}/login`,
+      body.toString(),
+      {
+        headers: {
+          'Content-Type':
+            'application/x-www-form-urlencoded'
+        }
+      }
+    ).pipe(
+
+      tap(response => {
+
+        localStorage.setItem(
+          'token',
+          response.access_token
+        );
+
+        this.token.set(
+          response.access_token
+        );
+
+      })
+
+    );
+  }
+
+  logout() {
+
+    localStorage.removeItem('token');
+
+    this.token.set(null);
+
+    this.router.navigate(['/login']);
+  }
+
+
+  isAuthenticated(): boolean {
+
+    return !!this.token();
+
+  }
+
+
+  getCurrentUser() {
+
+    return this.http.get(
+      `${this.apiUrl}/users/me`
+    );
+
+  }
+
 }
