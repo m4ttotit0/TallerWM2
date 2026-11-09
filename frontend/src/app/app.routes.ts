@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { DashboardComponent } from './pages/dashboard/dashboard';
-import { Items } from './pages/items/items';
+import { ItemsComponent } from './pages/items/items';
 
 import { authGuard } from './guards/auth.guard';
 
@@ -33,7 +33,7 @@ export const routes: Routes = [
 
   {
     path: 'items',
-    component: Items,
+    component: ItemsComponent,
     canActivate: [authGuard]
   },
 
