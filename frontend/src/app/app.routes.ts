@@ -42,4 +42,10 @@ export const routes: Routes = [
     redirectTo: 'login'
   }
 
+  { 
+    path: 'feed', 
+    component: DashboardComponent,
+    canActivate: [authGuard] 
+  }
+
 ];

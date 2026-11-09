@@ -1,1 +1,17 @@
-<p>dashboard works!</p>
+<div class="feed-container" style="display: flex; flexDirection: column; align-items: center; padding: 20px;">
+  @if (isLoading()) {
+    <mat-spinner diameter="40"></mat-spinner>
+  } @else {
+    @for (photo of photos(); track photo.id) {
+      <mat-card class="photo-card" style="margin-bottom: 20px; max-width: 400px; width: 100%;">
+        <mat-card-header>
+          <mat-card-title>{{ photo.user?.username || 'Usuario' }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="photo.image_url" [alt]="photo.description" style="width: 100%;">
+        <mat-card-content style="padding-top: 15px;">
+          <p>{{ photo.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>
