@@ -19,7 +19,7 @@ class PrincipalEntity(Base):
     __tablename__ = "principal_entities"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(100), nullable=False)
+    image_url = Column(String(500), nullable=False)
     description = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     

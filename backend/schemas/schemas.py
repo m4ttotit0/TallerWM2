@@ -17,12 +17,13 @@ class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class PrincipalEntityCreate(BaseModel):
-    title: str
+    image_url: str
     description: str | None = None
+
 
 class PrincipalEntityResponse(BaseModel):
     id: int
-    title: str
+    image_url: str
     description: str | None = None
     user_id: int
 
