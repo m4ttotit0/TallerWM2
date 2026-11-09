@@ -41,7 +41,7 @@ export class ItemsComponent {
       const formData = this.photoForm.value;
 
       // POST
-      this.http.post('http://localhost:8000/api/items', formData).subscribe({
+      this.http.post('http://localhost:8000/items/', formData).subscribe({
         next: () => {
           this.snackBar.open('Publicación exitosa :3', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/feed']); // Redirige feed

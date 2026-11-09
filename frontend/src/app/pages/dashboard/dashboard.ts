@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +12,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    RouterLink
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
@@ -20,6 +24,7 @@ export class DashboardComponent implements OnInit {
   
   photos = signal<any[]>([]);
   isLoading = signal<boolean>(true);
+  errorMessage = signal<string>('');
 
   ngOnInit() {
     this.cargarFotos();
@@ -27,13 +32,17 @@ export class DashboardComponent implements OnInit {
 
   cargarFotos() {
     this.isLoading.set(true);
-    this.http.get<any[]>('http://localhost:8000/api/photos').subscribe({
+    this.errorMessage.set('');
+    this.http.get<any[]>('http://localhost:8000/items/').subscribe({
       next: (data) => {
         this.photos.set(data);
         this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Error de carga', err);
+        this.errorMessage.set(
+          'No se pudieron cargar las publicaciones.'
+        );
         this.isLoading.set(false);
       }
     });
