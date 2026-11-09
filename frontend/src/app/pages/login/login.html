@@ -1,123 +1,55 @@
-<div class="login-container">
+<main class="auth-page login-page">
+  <div class="auth-decoration decoration-one" aria-hidden="true">✦</div>
+  <div class="auth-decoration decoration-two" aria-hidden="true">♡</div>
+  <div class="auth-decoration decoration-three" aria-hidden="true">✧</div>
 
-  <mat-card class="login-card">
+  <section class="auth-layout" aria-labelledby="login-title">
+    <header class="brand-block">
+    </header>
 
-    <h1>Bienvenido</h1>
+    <mat-card class="auth-card">
+      <div class="card-heading">
+        <h1 id="login-title">Inicia sesión</h1>
+      </div>
 
-    <p>
-      Ingresa a tu cuenta
-    </p>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email">
 
+          @if (loginForm.controls.email.hasError('required') && loginForm.controls.email.touched) {
+            <mat-error>El correo es obligatorio</mat-error>
+          }
 
-    <form
-      [formGroup]="loginForm"
-      (ngSubmit)="login()"
-    >
+          @if (loginForm.controls.email.hasError('email') && loginForm.controls.email.touched) {
+            <mat-error>Ingresa un correo válido</mat-error>
+          }
+        </mat-form-field>
 
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="current-password">
 
-      <mat-form-field appearance="outline">
+          @if (loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
+            <mat-error>La contraseña es obligatoria</mat-error>
+          }
+        </mat-form-field>
 
-        <mat-label>
-          Correo electrónico
-        </mat-label>
+        <button mat-raised-button class="auth-submit" type="submit" [disabled]="isLoading">
+          @if (isLoading) {
+            Ingresando...
+          } @else {
+            Entrar a mi cuenta
+          }
+        </button>
+      </form>
 
-        <input
-          matInput
-          type="email"
-          formControlName="email"
-        >
-
-        @if (
-          loginForm.controls.email.hasError('required')
-          &&
-          loginForm.controls.email.touched
-        ) {
-
-          <mat-error>
-            El correo es obligatorio
-          </mat-error>
-
-        }
-
-        @if (
-          loginForm.controls.email.hasError('email')
-          &&
-          loginForm.controls.email.touched
-        ) {
-
-          <mat-error>
-            Ingresa un correo válido
-          </mat-error>
-
-        }
-
-      </mat-form-field>
+      <p class="auth-switch">
+        ¿Todavía no tienes cuenta?
+        <a routerLink="/register">¡Regístrate aquí!</a>
+      </p>
+    </mat-card>
 
 
-
-      <mat-form-field appearance="outline">
-
-        <mat-label>
-          Contraseña
-        </mat-label>
-
-        <input
-          matInput
-          type="password"
-          formControlName="password"
-        >
-
-        @if (
-          loginForm.controls.password.hasError('required')
-          &&
-          loginForm.controls.password.touched
-        ) {
-
-          <mat-error>
-            La contraseña es obligatoria
-          </mat-error>
-
-        }
-
-      </mat-form-field>
-
-
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="isLoading"
-      >
-
-        @if (isLoading) {
-
-          Ingresando...
-
-        } @else {
-
-          Iniciar sesión
-
-        }
-
-      </button>
-
-
-    </form>
-
-
-
-    <p class="register-text">
-
-      ¿No tienes cuenta?
-
-      <a routerLink="/register">
-        Regístrate aquí
-      </a>
-
-    </p>
-
-
-  </mat-card>
-
-</div>
+  </section>
+</main>

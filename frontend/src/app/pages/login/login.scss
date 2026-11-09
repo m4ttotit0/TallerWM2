@@ -1,40 +1,272 @@
+/* Estilos compartidos de autenticación. Enfoque Mobile First. */
 
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f1f5f9;
+:host {
+  display: block;
 }
 
-.login-card {
+.auth-page {
+  --purple-dark: #54247d;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 28px 16px;
+
+  background:
+    radial-gradient(circle at 12% 15%, rgba(255,255,255,.9) 0 3px, transparent 4px),
+    radial-gradient(circle at 85% 78%, rgba(255,255,255,.8) 0 4px, transparent 5px),
+    linear-gradient(145deg, #f5eafd 0%, #e8d5f6 48%, #d9c1ed 100%);
+
+  color: #39234b;
+}
+
+.auth-layout {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 400px;
-  padding: 35px;
+  max-width: 440px;
+  margin: auto;
+}
+
+.brand-block {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 7px;
+
+  border: 2px solid rgba(255,255,255,.9);
   border-radius: 15px;
+
+  background: linear-gradient(145deg, #a76bd0, #67348f);
+  box-shadow: 0 5px 14px rgba(84,36,125,.22);
+
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.brand-name {
+  margin: 0;
+  color: var(--purple-dark);
+  font: 700 25px Georgia, 'Times New Roman', serif;
+  letter-spacing: -.7px;
+}
+
+.brand-tagline {
+  margin: 4px 0 0;
+  color: #806590;
+  font-size: 12px;
+  letter-spacing: .4px;
+}
+
+.auth-card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 25px 20px 21px;
+
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 22px;
+
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 16px 40px rgba(75,36,104,.15);
+}
+
+.card-heading {
+  margin-bottom: 20px;
   text-align: center;
 }
 
-h1 {
-  color: #1976d2;
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 7px;
+
+  color: #9868b4;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.card-heading h1 {
+  margin: 0;
+  color: var(--purple-dark);
+  font: 700 28px Georgia, 'Times New Roman', serif;
+}
+
+.card-heading p {
+  margin: 8px 0 0;
+  color: #81738a;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 7px;
 }
 
-button {
-  height: 45px;
+.auth-field {
+  width: 100%;
 }
 
-.register-text {
-  margin-top: 25px;
+.auth-submit {
+  width: 100%;
+  min-height: 47px;
+  margin-top: 5px;
+
+  border-radius: 12px !important;
+
+  background: linear-gradient(100deg, #74409b, #985fc0) !important;
+  box-shadow: 0 5px 12px rgba(116,64,155,.22) !important;
+
+  color: white !important;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .2px;
+
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
-a {
-  color: #1976d2;
+.auth-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(116,64,155,.28) !important;
+}
+
+.auth-submit:disabled {
+  opacity: .65;
+}
+
+.auth-switch {
+  margin: 20px 0 0;
+  color: #81738a;
+  font-size: 12px;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: #75439a;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: bold;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.auth-footer {
+  margin: 16px 0 0;
+  color: #806590;
+  font-size: 11px;
+  text-align: center;
+}
+
+.auth-decoration {
+  position: absolute;
+  color: rgba(111,60,150,.25);
+  pointer-events: none;
+  user-select: none;
+}
+
+.decoration-one {
+  top: 8%;
+  left: 8%;
+  font-size: 42px;
+}
+
+.decoration-two {
+  right: 8%;
+  top: 20%;
+  font-size: 50px;
+  transform: rotate(12deg);
+}
+
+.decoration-three {
+  right: 12%;
+  bottom: 9%;
+  font-size: 36px;
+}
+
+.register-card {
+  padding-top: 23px;
+  padding-bottom: 19px;
+}
+
+.register-card .card-heading {
+  margin-bottom: 15px;
+}
+
+.register-card .card-heading h1 {
+  font-size: 26px;
+}
+
+.register-card form {
+  gap: 3px;
+}
+
+.register-card .auth-switch {
+  margin-top: 14px;
+}
+
+/* Tablet y computador */
+
+@media (min-width: 768px) {
+  .auth-page {
+    padding: 40px 24px;
+  }
+
+  .auth-card {
+    padding: 32px 36px 27px;
+  }
+
+  .brand-mark {
+    width: 54px;
+    height: 54px;
+    font-size: 36px;
+  }
+
+  .brand-name {
+    font-size: 29px;
+  }
+
+  .card-heading h1 {
+    font-size: 31px;
+  }
+
+  .register-card {
+    padding: 27px 36px 23px;
+  }
+}
+
+/* Celulares pequeños */
+
+@media (max-width: 360px) {
+  .auth-page {
+    padding: 18px 12px;
+  }
+
+  .auth-card {
+    padding: 22px 15px 18px;
+  }
+
+  .card-heading h1 {
+    font-size: 25px;
+  }
+
+  .decoration-one,
+  .decoration-two,
+  .decoration-three {
+    opacity: .5;
+  }
 }

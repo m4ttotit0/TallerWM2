@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.database import engine
 from models import models
 from routers import auth, items
+from fastapi.middleware.cors import CORSMiddleware
 
 # Crear las tablas al iniciar
 models.Base.metadata.create_all(bind=engine)
