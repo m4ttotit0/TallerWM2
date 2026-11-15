@@ -33,3 +33,4 @@ def read_root():
     return {
         "message": "¡Servidor de FastAPI funcionando correctamente!"
     }
+
