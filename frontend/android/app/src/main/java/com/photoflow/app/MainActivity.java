@@ -1,4 +1,4 @@
-package com.photoflow;
+package com.photoflow.app;
 
 import com.getcapacitor.BridgeActivity;
 
