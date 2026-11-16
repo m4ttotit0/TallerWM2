@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 // Angular Material Imports
@@ -39,12 +39,17 @@ export class ItemsComponent {
   onSubmit() {
     if (this.photoForm.valid) {
       const formData = this.photoForm.value;
+      const token = localStorage.getItem('token');
 
-      // POST
-      this.http.post('http://localhost:8000/items/', formData).subscribe({
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
+      // POST con token de autorización
+      this.http.post('http://localhost:800/items/', formData, { headers }).subscribe({
         next: () => {
           this.snackBar.open('Publicación exitosa :3', 'Cerrar', { duration: 3000 });
-          this.router.navigate(['/feed']); // Redirige feed
+          this.router.navigate(['/dashboard']); // Redirige feed
         },
         error: (err) => {
           console.error('Error al subir la foto', err);
