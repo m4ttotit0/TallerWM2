@@ -1,21 +1,61 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { DeviceSensorsService } from './services/device-sensors.service';
 
 @Component({
   selector: 'app-crear-post',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
+  styles: [`
+    .sensor-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .gps-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #eef6ee;
+      color: #1b5e20;
+      font-size: 0.875rem;
+      width: fit-content;
+    }
+    .error-box {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #fdecea;
+      color: #b71c1c;
+      font-size: 0.875rem;
+    }
+  `],
   template: `
     <div class="sensor-panel">
-      <button type="button" (click)="capturarUbicacion()">Obtener ubicación GPS</button>
+      <button mat-stroked-button type="button" (click)="capturarUbicacion()">
+        <mat-icon>my_location</mat-icon>
+        Obtener ubicación GPS
+      </button>
 
-      @if (sensors.coordenadas(); as coords) {
-        <p>Ubicación: {{ coords.lat | number:'1.4-4' }}, {{ coords.lng | number:'1.4-4' }}</p>
+      @if (mostrarCoordenadas() && sensors.coordenadas(); as coords) {
+        <div class="gps-badge">
+          <mat-icon style="font-size: 18px; width: 18px; height: 18px;">location_on</mat-icon>
+          <span>Ubicación: {{ coords.lat | number:'1.4-4' }}, {{ coords.lng | number:'1.4-4' }}</span>
+        </div>
+      } @else if (!mostrarCoordenadas() && sensors.coordenadas()) {
+        <div class="gps-badge">
+          <mat-icon style="font-size: 18px; width: 18px; height: 18px;">check_circle</mat-icon>
+          <span>Ubicación adjunta</span>
+        </div>
       }
 
       @if (sensors.agitado()) {
-        <p>¡Movimiento detectado! Filtro o modo aleatorio activado.</p>
+        <div class="gps-badge">
+          <span>¡Movimiento detectado! Filtro o modo aleatorio activado.</span>
+        </div>
       }
 
       @if (sensors.errorMensaje(); as error) {
@@ -28,10 +68,10 @@ import { DeviceSensorsService } from './services/device-sensors.service';
 })
 export class CrearPostComponent implements OnInit, OnDestroy {
   protected sensors = inject(DeviceSensorsService);
+  mostrarCoordenadas = input<boolean>(false);
 
   async ngOnInit(): Promise<void> {
     await this.sensors.iniciarSensorAcelerometro(() => {
-      // Ejemplo de flujo integrado: agitar para limpiar o alternar estado en la creación/feed
       console.log('Acelerómetro activado en PhotoFlow');
     });
   }
@@ -39,7 +79,6 @@ export class CrearPostComponent implements OnInit, OnDestroy {
   async capturarUbicacion(): Promise<void> {
     const coords = await this.sensors.obtenerUbicacion();
     if (coords) {
-      // Aquí incluyes coords.lat y coords.lng en el payload que envías a FastAPI
       console.log('Listo para enviar a FastAPI:', coords);
     }
   }

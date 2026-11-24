@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://192.168.1.83:8000';
+  private apiUrl = 'http://192.168.1.12:8000';
 
   photos = signal<any[]>([]);
   isLoading = signal<boolean>(true);

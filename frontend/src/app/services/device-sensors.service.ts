@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
+import { Capacitor, PluginListenerHandle } from '@capacitor/core';
 import { Geolocation, Position } from '@capacitor/geolocation';
 import { Motion, AccelListenerEvent } from '@capacitor/motion';
-import { PluginListenerHandle } from '@capacitor/core';
 
 export interface Coordenadas {
   lat: number;
@@ -17,12 +17,59 @@ export class DeviceSensorsService {
   errorMensaje = signal<string | null>(null);
 
   private motionListener: PluginListenerHandle | null = null;
-  private readonly umbralAgite = 18; // Ajustable según sensibilidad deseada
+  private readonly umbralAgite = 18;
+
+  private obtenerPosicionWeb(): Promise<Coordenadas> {
+    return new Promise((resolve, reject) => {
+      if (!('geolocation' in navigator)) {
+        reject(new Error('Este navegador no soporta geolocalización.'));
+        return;
+      }
+
+      if (!window.isSecureContext && window.location.hostname !== 'localhost') {
+        reject(
+          new Error('La geolocalización web requiere HTTPS o localhost. Prueba en localhost o en el APK.')
+        );
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          resolve({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          });
+        },
+        (err) => {
+          if (err.code === err.PERMISSION_DENIED) {
+            reject(new Error('Permiso de ubicación denegado en el navegador.'));
+          } else if (err.code === err.POSITION_UNAVAILABLE) {
+            reject(new Error('Ubicación no disponible en este momento.'));
+          } else if (err.code === err.TIMEOUT) {
+            reject(new Error('Se agotó el tiempo de espera del GPS.'));
+          } else {
+            reject(new Error(err.message || 'No se pudo obtener la ubicación web.'));
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    });
+  }
 
   async obtenerUbicacion(): Promise<Coordenadas | null> {
     this.errorMensaje.set(null);
 
     try {
+      if (!Capacitor.isNativePlatform()) {
+        const coordsWeb = await this.obtenerPosicionWeb();
+        this.coordenadas.set(coordsWeb);
+        return coordsWeb;
+      }
+
       let permisos = await Geolocation.checkPermissions();
 
       if (permisos.location === 'denied') {

@@ -57,7 +57,7 @@ export class ItemsComponent {
       });
 
       // POST con token de autorización
-      this.http.post('http://192.168.1.83:8000/items/', payload, { headers }).subscribe({
+      this.http.post('http://192.168.1.12:8000/items/', payload, { headers }).subscribe({
         next: () => {
           this.snackBar.open('Publicación exitosa :3', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/dashboard']); // Redirige feed
