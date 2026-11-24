@@ -22,7 +22,8 @@ export class AuthService {
 
   private router = inject(Router);
 
-  private apiUrl = 'http://localhost:8000';
+ private apiUrl = 'http://192.168.1.83:8000';
+
 
   token = signal<string | null>(
     localStorage.getItem('token')

@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import * as QRCode from 'qrcode';
+
 import {
   BarcodeScanner,
   BarcodeFormat
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8000';
+  private apiUrl = 'http://192.168.1.83:8000';
 
   photos = signal<any[]>([]);
   isLoading = signal<boolean>(true);
@@ -73,7 +74,13 @@ export class DashboardComponent implements OnInit {
 
   // CARGAR DATOS DEL USUARIO Y GENERAR QR
   cargarUsuario() {
-    this.http.get<any>(`${this.apiUrl}/users/me`).subscribe({
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    this.http.get<any>(`${this.apiUrl}/users/me`, { headers }).subscribe({
       next: async (user) => {
         this.currentUser.set(user);
 
@@ -81,8 +88,13 @@ export class DashboardComponent implements OnInit {
 
         try {
           const imagen = await QRCode.toDataURL(contenidoQR, {
-            width: 220,
-            margin: 2
+            width: 250,
+            margin: 2,
+            color: {
+              dark: '#542583',
+              light: '#FFFFFF'
+            },
+            errorCorrectionLevel: 'H'
           });
 
           this.qrImage.set(imagen);
@@ -103,7 +115,6 @@ export class DashboardComponent implements OnInit {
     this.perfilEncontrado.set(null);
 
     try {
-      // Comprobar si el escáner está disponible
       const { available } =
         await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
 
@@ -117,7 +128,6 @@ export class DashboardComponent implements OnInit {
         return;
       }
 
-      // Abrir el escáner
       const resultado = await BarcodeScanner.scan({
         formats: [BarcodeFormat.QrCode]
       });
@@ -129,13 +139,11 @@ export class DashboardComponent implements OnInit {
 
       const contenido = resultado.barcodes[0].rawValue;
 
-      // Comprobar que el QR tenga contenido
       if (!contenido) {
         this.errorQR.set('No se pudo leer el contenido del código QR.');
         return;
       }
 
-      // Comprobar que sea un QR de PhotoFlow
       const coincidencia = contenido.match(/^PHOTOFLOW_USER:(\d+)$/);
 
       if (!coincidencia) {
@@ -145,9 +153,15 @@ export class DashboardComponent implements OnInit {
 
       const userId = Number(coincidencia[1]);
 
-      // Buscar el perfil en el backend
+      const token = localStorage.getItem('token');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
       this.http.get<any>(
-        `${this.apiUrl}/users/${userId}/profile`
+        `${this.apiUrl}/users/${userId}/profile`,
+        { headers }
       ).subscribe({
         next: (perfil) => {
           this.perfilEncontrado.set(perfil);

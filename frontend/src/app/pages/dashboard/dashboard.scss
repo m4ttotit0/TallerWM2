@@ -1,0 +1,175 @@
+
+.feed-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 15px;
+  background: #f3eaff;
+  background-image: radial-gradient(#d9c1f2 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* TARJETA FOTOLOG */
+
+.fotolog-card {
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  border: 3px solid #b58ad9;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(91, 45, 130, 0.18);
+  margin-bottom: 25px;
+}
+
+.fotolog-header {
+  background: #7542a6;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.header-decoration {
+  font-size: 25px;
+}
+
+.fotolog-content {
+  padding: 25px 20px;
+  text-align: center;
+  color: #58327e;
+}
+
+.welcome-text {
+  color: #a477ca;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.fotolog-content h2 {
+  color: #7542a6;
+  font-size: 27px;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.qr-description {
+  color: #9275aa;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+.qr-frame {
+  display: inline-block;
+  padding: 12px;
+  background: #ffffff;
+  border: 2px dashed #b58ad9;
+  border-radius: 15px;
+}
+
+.qr-frame img {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+}
+
+.username-tag {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 9px 22px;
+  background: #eee1fa;
+  color: #7542a6;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.fotolog-footer {
+  color: #a58ab9;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+/* BOTONES */
+
+.scan-button,
+.publish-button,
+.close-button {
+  background: #7542a6 !important;
+  color: white !important;
+  border-radius: 25px !important;
+  padding: 8px 22px !important;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.scan-button:hover,
+.publish-button:hover,
+.close-button:hover {
+  background: #572d82 !important;
+}
+
+/* PERFIL ENCONTRADO */
+
+.profile-card {
+  padding: 22px;
+  margin-bottom: 25px;
+  max-width: 400px;
+  width: 100%;
+  border: 2px solid #c5a2e5;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.profile-card h2,
+.profile-card h3 {
+  color: #7542a6;
+}
+
+.profile-photo {
+  margin: 15px 0;
+}
+
+.profile-photo img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* MENSAJES */
+
+.error-message {
+  color: #b42355;
+  background: #ffe4ed;
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+/* PUBLICACIONES */
+
+.photo-card {
+  margin-bottom: 20px;
+  max-width: 400px;
+  width: 100%;
+  border: 2px solid #d5b9ec;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.photo-card mat-card-header {
+  background: #eee1fa;
+  padding: 12px;
+  color: #7542a6;
+}
+
+.photo-card img {
+  width: 100%;
+}
+
+.photo-card mat-card-content {
+  padding: 15px;
+  color: #58327e;
+}

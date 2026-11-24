@@ -1,80 +1,108 @@
+<div class="feed-container">
 
-<div class="feed-container"
-     style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-
-
+  <!-- TARJETA DEL QR -->
   @if (currentUser() && qrImage()) {
-    <mat-card style="padding: 20px; margin-bottom: 25px; text-align: center; max-width: 400px;">
-      <h2>Mi código QR</h2>
+    <section class="fotolog-card">
 
-      <p>Comparte este código para que otras personas encuentren tu perfil.</p>
+      <div class="fotolog-header">
+        <span>✦ PHOTO FLOW ✦</span>
+        <span class="header-decoration">♡</span>
+      </div>
 
-      <img
-        [src]="qrImage()"
-        alt="Mi código QR"
-        style="width: 220px; max-width: 100%;"
-      />
+      <div class="fotolog-content">
 
-      <p>Usuario: {{ currentUser().username }}</p>
-    </mat-card>
+        <p class="welcome-text">¡Comparte tu mundo!</p>
+
+        <h2>Mi código QR</h2>
+
+        <p class="qr-description">
+          Escanea mi código y descubre mis fotografías
+        </p>
+
+        <div class="qr-frame">
+          <img
+            [src]="qrImage()"
+            alt="Mi código QR"
+          />
+        </div>
+
+        <div class="username-tag">
+          ♡ {{ currentUser().username }} ♡
+        </div>
+
+        <p class="fotolog-footer">
+          Captura momentos, comparte recuerdos ✨
+        </p>
+
+      </div>
+
+    </section>
   }
 
+  <!-- BOTÓN ESCANEAR -->
   <button
     mat-raised-button
-    color="accent"
+    class="scan-button"
     (click)="escanearQR()"
-    style="margin-bottom: 20px;"
   >
-    Escanear código QR
+    ♡ Escanear código QR
   </button>
 
+  <!-- ERROR QR -->
   @if (errorQR()) {
-    <p style="color: red;">{{ errorQR() }}</p>
+    <p class="error-message">{{ errorQR() }}</p>
   }
 
+  <!-- PERFIL ENCONTRADO -->
   @if (perfilEncontrado()) {
-    <mat-card style="padding: 20px; margin-bottom: 25px; max-width: 400px; width: 100%;">
-      <h2>Perfil encontrado</h2>
+    <mat-card class="profile-card">
+
+      <h2>♡ Perfil encontrado ♡</h2>
 
       <h3>{{ perfilEncontrado().username }}</h3>
 
       <p>ID: {{ perfilEncontrado().id }}</p>
 
-      <h3>Publicaciones</h3>
+      <h3>Sus publicaciones</h3>
 
       @if (perfilEncontrado().items.length === 0) {
         <p>Este usuario todavía no tiene publicaciones.</p>
       }
 
       @for (photo of perfilEncontrado().items; track photo.id) {
-        <div style="margin-bottom: 15px;">
+        <div class="profile-photo">
+
           <img
             [src]="photo.image_url"
             alt="Publicación del usuario"
-            style="width: 100%;"
           />
 
           <p>{{ photo.description }}</p>
+
         </div>
       }
 
       <button
         mat-raised-button
-        color="warn"
+        class="close-button"
         (click)="cerrarPerfil()"
       >
         Cerrar perfil
       </button>
+
     </mat-card>
   }
 
-  <a mat-raised-button
-     color="primary"
-     routerLink="/items"
-     style="margin-bottom: 20px;">
+  <!-- PUBLICAR FOTO -->
+  <a
+    mat-raised-button
+    class="publish-button"
+    routerLink="/items"
+  >
     + Publicar una foto
   </a>
 
+  <!-- CARGA -->
   @if (isLoading()) {
     <mat-spinner diameter="40"></mat-spinner>
   }
@@ -84,30 +112,39 @@
   }
 
   @else if (photos().length === 0) {
+
     <h2>¡Todavía no hay publicaciones!</h2>
+
     <p>Sé la primera persona en compartir una foto :3</p>
+
   }
 
   @else {
+
     @for (photo of photos(); track photo.id) {
-      <mat-card class="photo-card"
-                style="margin-bottom: 20px; max-width: 400px; width: 100%;">
+
+      <mat-card class="photo-card">
 
         <mat-card-header>
-          <mat-card-title>Usuario #{{ photo.user_id }}</mat-card-title>
+          <mat-card-title>
+            Usuario #{{ photo.user_id }}
+          </mat-card-title>
         </mat-card-header>
 
-        <img mat-card-image
-             [src]="photo.image_url"
-             [alt]="photo.description"
-             style="width: 100%;">
+        <img
+          mat-card-image
+          [src]="photo.image_url"
+          [alt]="photo.description"
+        />
 
-        <mat-card-content style="padding-top: 15px;">
+        <mat-card-content>
           <p>{{ photo.description }}</p>
         </mat-card-content>
 
       </mat-card>
+
     }
+
   }
 
 </div>
