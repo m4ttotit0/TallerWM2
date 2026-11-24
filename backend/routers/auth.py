@@ -124,3 +124,31 @@ def get_current_user(
 @router.get("/users/me", response_model=schemas.UserResponse)
 def get_my_user(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+# CONSULTAR PERFIL PUBLICO DE OTRO USUARIO
+@router.get("/users/{user_id}/profile")
+def get_user_profile(
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    # Buscar al usuario por su ID
+    user = db.query(models.User).filter(
+        models.User.id == user_id
+    ).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuario no encontrado"
+        )
+
+    # Buscar las publicaciones de ese usuario
+    photos = db.query(models.PrincipalEntity).filter(
+        models.PrincipalEntity.user_id == user_id
+    ).all()
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "items": photos
+    }

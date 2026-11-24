@@ -2,6 +2,72 @@
 <div class="feed-container"
      style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
 
+
+  @if (currentUser() && qrImage()) {
+    <mat-card style="padding: 20px; margin-bottom: 25px; text-align: center; max-width: 400px;">
+      <h2>Mi código QR</h2>
+
+      <p>Comparte este código para que otras personas encuentren tu perfil.</p>
+
+      <img
+        [src]="qrImage()"
+        alt="Mi código QR"
+        style="width: 220px; max-width: 100%;"
+      />
+
+      <p>Usuario: {{ currentUser().username }}</p>
+    </mat-card>
+  }
+
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="escanearQR()"
+    style="margin-bottom: 20px;"
+  >
+    Escanear código QR
+  </button>
+
+  @if (errorQR()) {
+    <p style="color: red;">{{ errorQR() }}</p>
+  }
+
+  @if (perfilEncontrado()) {
+    <mat-card style="padding: 20px; margin-bottom: 25px; max-width: 400px; width: 100%;">
+      <h2>Perfil encontrado</h2>
+
+      <h3>{{ perfilEncontrado().username }}</h3>
+
+      <p>ID: {{ perfilEncontrado().id }}</p>
+
+      <h3>Publicaciones</h3>
+
+      @if (perfilEncontrado().items.length === 0) {
+        <p>Este usuario todavía no tiene publicaciones.</p>
+      }
+
+      @for (photo of perfilEncontrado().items; track photo.id) {
+        <div style="margin-bottom: 15px;">
+          <img
+            [src]="photo.image_url"
+            alt="Publicación del usuario"
+            style="width: 100%;"
+          />
+
+          <p>{{ photo.description }}</p>
+        </div>
+      }
+
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="cerrarPerfil()"
+      >
+        Cerrar perfil
+      </button>
+    </mat-card>
+  }
+
   <a mat-raised-button
      color="primary"
      routerLink="/items"
