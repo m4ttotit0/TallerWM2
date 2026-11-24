@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any[]>('http://localhost:800/items/', { headers }).subscribe({
+    this.http.get<any[]>('http://192.168.1.12:800/items/', { headers }).subscribe({
       next: (data) => {
         this.photos.set(data);
         this.isLoading.set(false);

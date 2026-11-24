@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   imports: [MatToolbarModule, MatButtonModule, RouterLink],
   template: `
     <mat-toolbar color="primary">
-      <span>📸AuLog📸</span>
+      <span>📸PhotoFlow📸</span>
       <span style="flex: 1.1;"></span>
       <button mat-button routerLink="/feed">Feed</button>
       <button mat-button routerLink="/upload">Subir Foto</button>

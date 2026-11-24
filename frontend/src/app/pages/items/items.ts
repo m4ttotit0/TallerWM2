@@ -11,6 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+// Sensores y componente de creación con sensores
+import { CrearPostComponent } from '../../crearpost.component';
+import { DeviceSensorsService } from '../../services/device-sensors.service';
+
 @Component({
   selector: 'app-items',
   standalone: true,
@@ -21,7 +25,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    CrearPostComponent
   ],
   templateUrl: './items.html',
   styleUrls: ['./items.scss']
@@ -30,6 +35,7 @@ export class ItemsComponent {
   private http = inject(HttpClient);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  protected sensors = inject(DeviceSensorsService);
 
   photoForm = new FormGroup({
     image_url: new FormControl('', [Validators.required, Validators.pattern(/https?:\/\/.+/)]),
@@ -38,7 +44,12 @@ export class ItemsComponent {
 
   onSubmit() {
     if (this.photoForm.valid) {
-      const formData = this.photoForm.value;
+      const coords = this.sensors.coordenadas();
+      const payload = {
+        ...this.photoForm.value,
+        ...(coords ? { lat: coords.lat, lng: coords.lng } : {})
+      };
+
       const token = localStorage.getItem('token');
 
       const headers = new HttpHeaders({
@@ -46,7 +57,7 @@ export class ItemsComponent {
       });
 
       // POST con token de autorización
-      this.http.post('http://localhost:800/items/', formData, { headers }).subscribe({
+      this.http.post('http://192.168.1.12:800/items/', payload, { headers }).subscribe({
         next: () => {
           this.snackBar.open('Publicación exitosa :3', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/dashboard']); // Redirige feed
